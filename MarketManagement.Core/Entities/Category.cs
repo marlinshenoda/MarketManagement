@@ -1,11 +1,12 @@
-﻿using MarketManagement.Core.Interfaces;
+﻿using eTickets.Core.Interfaces;
+using MarketManagement.Core.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace MarketManagement.Core.Entities
 {
-    public class Category 
+    public class Category :IEntityBase
     {
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public string Name { get; set; } = string.Empty;

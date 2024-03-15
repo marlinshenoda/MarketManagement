@@ -1,6 +1,7 @@
 ﻿
 using MarketManagement.Core.Entities;
 using MarketManagement.Core.Interfaces;
+using MarketManagement.Data.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;

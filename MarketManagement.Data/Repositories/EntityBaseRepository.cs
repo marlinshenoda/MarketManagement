@@ -1,4 +1,5 @@
-﻿using MarketManagement.Core.Interfaces;
+﻿using eTickets.Core.Interfaces;
+using MarketManagement.Core.Interfaces;
 using MarketManagement.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MarketManagement.Data.Repositories
 {
-    public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class, new()
+    public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class, IEntityBase, new()
     {
         private readonly ApplicationDbContext _context;
         public EntityBaseRepository(ApplicationDbContext context)
