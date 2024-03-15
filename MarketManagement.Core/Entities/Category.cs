@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MarketManagement.Core.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace MarketManagement.Core.Entities
 {
-    public class Category
+    public class Category 
     {
         public int CategoryId { get; set; }
 
