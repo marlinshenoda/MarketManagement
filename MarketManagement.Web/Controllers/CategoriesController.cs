@@ -59,12 +59,11 @@ namespace MarketManagement.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryId,Name,Description")] Category category)
+        public async Task<IActionResult> Create(Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+             await _service.AddAsync(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -94,12 +93,7 @@ namespace MarketManagement.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,Category category)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(actor);
-            //}
-            //await _service.UpdateAsync(id, actor);
-            //return RedirectToAction(nameof(Index));
+            
             if (id != category.Id)
             {
                 return NotFound();
