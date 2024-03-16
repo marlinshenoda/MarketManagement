@@ -61,6 +61,8 @@ namespace MarketManagement.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
         {
+            ViewBag.Action = "Create";
+
             if (ModelState.IsValid)
             {
              await _service.AddAsync(category);
@@ -72,7 +74,8 @@ namespace MarketManagement.Web.Controllers
       //  GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-           
+            ViewBag.Action = "edit";
+
             if (id == null)
             {
                 return NotFound();
