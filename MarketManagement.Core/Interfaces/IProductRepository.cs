@@ -9,5 +9,6 @@ namespace MarketManagement.Core.Interfaces
 {
     public interface IProductRepository: IEntityBaseRepository<Product>
     {
+
     }
 }

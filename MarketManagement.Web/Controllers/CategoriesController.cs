@@ -51,6 +51,8 @@ namespace MarketManagement.Web.Controllers
         // GET: Categories/Create
         public IActionResult Create()
         {
+            ViewBag.Action = "Create";
+
             return View();
         }
 
