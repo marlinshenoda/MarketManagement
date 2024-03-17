@@ -27,25 +27,26 @@ namespace MarketManagement.Web.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Category.ToListAsync());
+            var data = await _service.GetAllAsync();
+
+            return View(data);
         }
 
        // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Category
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            var Details = await _service.GetByIdAsync(id);
+            if (Details == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(Details);
         }
 
         // GET: Categories/Create

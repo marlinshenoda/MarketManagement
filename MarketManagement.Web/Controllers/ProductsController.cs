@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MarketManagement.Core.Entities;
 using MarketManagement.Data.Data;
+using MarketManagement.Core.Interfaces;
 
 namespace MarketManagement.Web.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IProductRepository _service;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context,IProductRepository service)
         {
             _context = context;
+            _service = service;
+
         }
 
         // GET: Products
