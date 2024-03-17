@@ -36,7 +36,7 @@ namespace MarketManagement.Web.Controllers
 
             var product = await _context.Product
                 .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.ProductId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -93,7 +93,7 @@ namespace MarketManagement.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductId,CategoryId,Name,Quantity,Price")] Product product)
         {
-            if (id != product.ProductId)
+            if (id != product.Id)
             {
                 return NotFound();
             }
@@ -107,7 +107,7 @@ namespace MarketManagement.Web.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.ProductId))
+                    if (!ProductExists(product.Id))
                     {
                         return NotFound();
                     }
@@ -132,7 +132,7 @@ namespace MarketManagement.Web.Controllers
 
             var product = await _context.Product
                 .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.ProductId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -158,7 +158,7 @@ namespace MarketManagement.Web.Controllers
 
         private bool ProductExists(int id)
         {
-            return _context.Product.Any(e => e.ProductId == id);
+            return _context.Product.Any(e => e.Id == id);
         }
     }
 }

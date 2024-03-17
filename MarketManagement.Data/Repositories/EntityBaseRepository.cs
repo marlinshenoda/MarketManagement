@@ -1,5 +1,4 @@
-﻿using eTickets.Core.Interfaces;
-using MarketManagement.Core.Interfaces;
+﻿using MarketManagement.Core.Interfaces;
 using MarketManagement.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

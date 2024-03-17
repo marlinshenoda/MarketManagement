@@ -34,7 +34,7 @@ namespace MarketManagement.Web.Controllers
             }
 
             var transaction = await _context.Transaction
-                .FirstOrDefaultAsync(m => m.TransactionId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (transaction == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace MarketManagement.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TransactionId,TimeStamp,ProductId,ProductName,Price,BeforeQty,SoldQty,CashierName")] Transaction transaction)
         {
-            if (id != transaction.TransactionId)
+            if (id != transaction.Id)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace MarketManagement.Web.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TransactionExists(transaction.TransactionId))
+                    if (!TransactionExists(transaction.Id))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace MarketManagement.Web.Controllers
             }
 
             var transaction = await _context.Transaction
-                .FirstOrDefaultAsync(m => m.TransactionId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (transaction == null)
             {
                 return NotFound();
@@ -151,7 +151,7 @@ namespace MarketManagement.Web.Controllers
 
         private bool TransactionExists(int id)
         {
-            return _context.Transaction.Any(e => e.TransactionId == id);
+            return _context.Transaction.Any(e => e.Id == id);
         }
     }
 }

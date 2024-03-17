@@ -44,11 +44,11 @@ namespace MarketManagement.Data.Migrations
 
             modelBuilder.Entity("MarketManagement.Core.Entities.Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CategoryId")
                         .IsRequired()
@@ -66,7 +66,7 @@ namespace MarketManagement.Data.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
@@ -75,11 +75,11 @@ namespace MarketManagement.Data.Migrations
 
             modelBuilder.Entity("MarketManagement.Core.Entities.Transaction", b =>
                 {
-                    b.Property<int>("TransactionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransactionId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BeforeQty")
                         .HasColumnType("int");
@@ -104,7 +104,7 @@ namespace MarketManagement.Data.Migrations
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("TransactionId");
+                    b.HasKey("Id");
 
                     b.ToTable("Transaction");
                 });

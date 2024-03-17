@@ -1,4 +1,4 @@
-﻿using eTickets.Core.Interfaces;
+﻿using MarketManagement.Core.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace MarketManagement.Core.Entities

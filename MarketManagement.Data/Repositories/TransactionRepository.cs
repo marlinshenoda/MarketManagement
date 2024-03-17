@@ -1,4 +1,5 @@
-﻿using MarketManagement.Core.Entities;
+﻿
+using MarketManagement.Core.Entities;
 using MarketManagement.Core.Interfaces;
 using MarketManagement.Data.Data;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace MarketManagement.Data.Repositories
 {
-    public class ProductRepository : EntityBaseRepository<Product>, IProductRepository
+    public class TransactionRepository : EntityBaseRepository<Transaction>, ITransactionRepository
     {
-        public ProductRepository(ApplicationDbContext context) : base(context)
+        public TransactionRepository(ApplicationDbContext context) : base(context)
         {
         }
     }
