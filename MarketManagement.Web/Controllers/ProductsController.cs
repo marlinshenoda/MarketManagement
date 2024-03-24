@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MarketManagement.Core.Entities;
 using MarketManagement.Data.Data;
 using MarketManagement.Core.Interfaces;
+using MarketManagement.Core.Entities.ViewModels;
 
 namespace MarketManagement.Web.Controllers
 {
@@ -26,8 +27,9 @@ namespace MarketManagement.Web.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Product.Include(p => p.Category);
-            return View(await applicationDbContext.ToListAsync());
+            var allProducts = await _service.GetAllAsync(n => n.Category);
+            return View(allProducts);
+         
         }
 
         // GET: Products/Details/5
@@ -52,7 +54,8 @@ namespace MarketManagement.Web.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name");
+            ViewBag.Action = "Create";
+
             return View();
         }
 
@@ -61,33 +64,46 @@ namespace MarketManagement.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,CategoryId,Name,Quantity,Price")] Product product)
+        public async Task<IActionResult> Create(CreateProductViewModel product)
         {
+             ViewBag.Action = "Create";
+
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                await _service.AddNewProductAsync(product);
                 return RedirectToAction(nameof(Index));
+            
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name", product.CategoryId);
             return View(product);
         }
 
         // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
+            ViewBag.Action = "edit";
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Product.FindAsync(id);
+            var product = await _service.GetByIdAsync(id);
+
             if (product == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name", product.CategoryId);
-            return View(product);
+            var response = new CreateProductViewModel
+            {
+                Id = id,
+                ProductName = product.Name,
+                ProductQuantity = (int)product.Quantity,
+                ProductPrice = (double)product.Price,
+                CategoryId= (int)product.CategoryId
+
+
+            };
+            return View(response);
         }
 
         // POST: Products/Edit/5
@@ -95,8 +111,10 @@ namespace MarketManagement.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,CategoryId,Name,Quantity,Price")] Product product)
+        public async Task<IActionResult> Edit(int id, CreateProductViewModel product)
         {
+            ViewBag.Action = "Edit";
+
             if (id != product.Id)
             {
                 return NotFound();
@@ -106,7 +124,7 @@ namespace MarketManagement.Web.Controllers
             {
                 try
                 {
-                    _context.Update(product);
+                  await  _service.EditNewProductAsync(product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -122,7 +140,6 @@ namespace MarketManagement.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name", product.CategoryId);
             return View(product);
         }
 
