@@ -54,16 +54,16 @@ namespace MarketManagement.Web.Controllers
         }
 
         // GET: Products/Create
-        public IActionResult Create()
+        public async Task<IActionResult>Create()
         {
             ViewBag.Action = "Create";
 
-            var productViewModal = new ProductViewModel
+            var product = new ProductViewModel
             {
-                Categories = (IEnumerable<Category>)_categoryRepository.GetAllAsync()
+                Categories = await _categoryRepository.GetAllAsync()
             };
 
-            return View();
+            return View(product);
         }
 
         // POST: Products/Create
@@ -81,6 +81,7 @@ namespace MarketManagement.Web.Controllers
                 return RedirectToAction(nameof(Index));
             
             }
+
             return View(product);
         }
 
@@ -89,25 +90,12 @@ namespace MarketManagement.Web.Controllers
         {
             ViewBag.Action = "edit";
 
-            if (id == null)
+          
+            var response = new ProductViewModel
             {
-                return NotFound();
-            }
-
-            var product = await _service.GetByIdAsync(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-            var response = new CreateProductViewModel
-            {
-                Id = id,
-                ProductName = product.Name,
-                ProductQuantity = (int)product.Quantity,
-                ProductPrice = (double)product.Price,
-                CategoryId= (int)product.CategoryId
-
+                Product = await _service.GetByIdAsync(id),
+                
+                Categories= await _categoryRepository.GetAllAsync()
 
             };
             return View(response);
@@ -118,11 +106,11 @@ namespace MarketManagement.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CreateProductViewModel product)
+        public async Task<IActionResult> Edit(int id, ProductViewModel product)
         {
             ViewBag.Action = "Edit";
 
-            if (id != product.Id)
+            if (id != product.Product.Id)
             {
                 return NotFound();
             }
@@ -131,12 +119,12 @@ namespace MarketManagement.Web.Controllers
             {
                 try
                 {
-                  await  _service.EditNewProductAsync(product);
+                  await  _service.UpdateAsync(product.Product.Id,product.Product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!ProductExists(product.Product.Id))
                     {
                         return NotFound();
                     }
