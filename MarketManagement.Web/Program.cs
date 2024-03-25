@@ -21,7 +21,7 @@ builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 builder.Services.AddScoped<ISelectProductType, SelectProductType>();
 
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryRepository, _categoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 

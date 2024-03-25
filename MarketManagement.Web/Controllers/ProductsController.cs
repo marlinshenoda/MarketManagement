@@ -9,6 +9,7 @@ using MarketManagement.Core.Entities;
 using MarketManagement.Data.Data;
 using MarketManagement.Core.Interfaces;
 using MarketManagement.Core.Entities.ViewModels;
+using MarketManagement.Data.Repositories;
 
 namespace MarketManagement.Web.Controllers
 {
@@ -16,12 +17,13 @@ namespace MarketManagement.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IProductRepository _service;
+        private ICategoryRepository _categoryRepository;
 
-        public ProductsController(ApplicationDbContext context,IProductRepository service)
+        public ProductsController(ApplicationDbContext context,IProductRepository service ,ICategoryRepository  categoryRepository)
         {
             _context = context;
             _service = service;
-
+            _categoryRepository=categoryRepository;
         }
 
         // GET: Products
@@ -56,6 +58,11 @@ namespace MarketManagement.Web.Controllers
         {
             ViewBag.Action = "Create";
 
+            var productViewModal = new ProductViewModel
+            {
+                Categories = (IEnumerable<Category>)_categoryRepository.GetAllAsync()
+            };
+
             return View();
         }
 
@@ -64,13 +71,13 @@ namespace MarketManagement.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateProductViewModel product)
+        public async Task<IActionResult> Create(ProductViewModel product)
         {
              ViewBag.Action = "Create";
 
             if (ModelState.IsValid)
             {
-                await _service.AddNewProductAsync(product);
+                await _service.AddAsync(product.Product);
                 return RedirectToAction(nameof(Index));
             
             }

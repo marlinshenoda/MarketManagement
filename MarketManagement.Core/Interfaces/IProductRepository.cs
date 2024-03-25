@@ -10,8 +10,7 @@ namespace MarketManagement.Core.Interfaces
 {
     public interface IProductRepository: IEntityBaseRepository<Product>
     {
-        Task AddNewProductAsync(CreateProductViewModel data);
-        Task EditNewProductAsync(CreateProductViewModel data);
+       
 
     }
 }

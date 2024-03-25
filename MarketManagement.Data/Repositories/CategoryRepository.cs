@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace MarketManagement.Data.Repositories
 {
-    public class CategoryRepository : EntityBaseRepository<Category>, ICategoryRepository
+    public class _categoryRepository : EntityBaseRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(ApplicationDbContext context) : base(context) { }
+        public _categoryRepository(ApplicationDbContext context) : base(context) { }
 
     }
 }

@@ -10,6 +10,5 @@ namespace MarketManagement.Core.Entities.ViewModels
     {
         public IEnumerable<Category> Categories { get; set; } = new List<Category>();
         public Product Product { get; set; } = new Product();
-        public Category Category { get; set; } = new Category();
     }
 }
