@@ -1,0 +1,17 @@
+﻿@model SalesViewModel
+@inject ISelectProductType services
+@{
+    ViewData["Title"] = "Index";
+}
+
+ <div class="form-group">
+                <label asp-for="SelectedCategoryId" class="control-label"></label>
+    <select asp-for="SelectedCategoryId" class="form-control" asp-items="@await services.GetProductsCategory()">
+                    @if (Model is null)
+                    {
+                        <option selected="selected" value="">Choose a type</option>
+
+                    }
+
+                </select>
+            </div>
