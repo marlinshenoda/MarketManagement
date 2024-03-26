@@ -10,7 +10,7 @@ namespace MarketManagement.AutoMapper
     {
         public MapperProfile()
         {
-            CreateMap<Product, ProductViewModel>();
+            CreateMap<Product, ProductViewModel>().ReverseMap(); ;
             CreateMap<Product, CreateProductViewModel>().ReverseMap();
             // CreateMap<Vehicle, VehicleEditViewModel>().ReverseMap();
             //CreateMap<Vehicle, VehicleDetailsViewModel>();

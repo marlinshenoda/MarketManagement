@@ -56,7 +56,7 @@ namespace MarketManagement.Web.Controllers
         // GET: Products/Create
         public async Task<IActionResult>Create()
         {
-            ViewBag.Action = "Create";
+            ViewBag.Action = "create";
 
             var product = new ProductViewModel
             {
@@ -71,18 +71,18 @@ namespace MarketManagement.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductViewModel product)
+        public async Task<IActionResult> Create(ProductViewModel createproduct)
         {
-             ViewBag.Action = "Create";
+             ViewBag.Action = "create";
 
             if (ModelState.IsValid)
             {
-                await _service.AddAsync(product.Product);
+                await _service.AddAsync(createproduct.Product);
                 return RedirectToAction(nameof(Index));
             
             }
 
-            return View(product);
+            return View(createproduct);
         }
 
         // GET: Products/Edit/5
@@ -91,14 +91,14 @@ namespace MarketManagement.Web.Controllers
             ViewBag.Action = "edit";
 
           
-            var response = new ProductViewModel
+            var product = new ProductViewModel
             {
                 Product = await _service.GetByIdAsync(id),
                 
                 Categories= await _categoryRepository.GetAllAsync()
 
             };
-            return View(response);
+            return View(product);
         }
 
         // POST: Products/Edit/5
@@ -106,11 +106,9 @@ namespace MarketManagement.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ProductViewModel product)
+        public async Task<IActionResult> Edit(int id, ProductViewModel editproduct)
         {
-            ViewBag.Action = "Edit";
-
-            if (id != product.Product.Id)
+            if (id != editproduct.Product.Id)
             {
                 return NotFound();
             }
@@ -119,12 +117,11 @@ namespace MarketManagement.Web.Controllers
             {
                 try
                 {
-                  await  _service.UpdateAsync(product.Product.Id,product.Product);
-                    await _context.SaveChangesAsync();
+                    await _service.UpdateAsync(id, editproduct.Product);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Product.Id))
+                    if (!ProductExists(editproduct.Product.Id))
                     {
                         return NotFound();
                     }
@@ -133,9 +130,14 @@ namespace MarketManagement.Web.Controllers
                         throw;
                     }
                 }
+               
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            ViewBag.Action = "deit";
+
+            return View(editproduct);
+         
+
         }
 
         // GET: Products/Delete/5
