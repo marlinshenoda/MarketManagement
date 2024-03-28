@@ -27,5 +27,11 @@ namespace MarketManagement.Web.Controllers
             };
             return View(salesViewModel);
         }
+        public async Task<IActionResult> GetProductsByCategoryId(int categoryId)
+        {
+            var products = _context.Product.Where(x => x.CategoryId == categoryId).ToList();
+            return PartialView("_Products", products);
+
+        }
     }
 }
