@@ -1,4 +1,4 @@
-﻿@* @model IEnumerable<Product>
+﻿@model IEnumerable<Product>
 
 @if (Model != null && Model.Count() > 0)
 {
@@ -12,11 +12,11 @@
         <tbody>
             @foreach (var product in Model)
             {
-                <tr class="product-row" product-id="@product.ProductId">
+                <tr class="product-row" product-id="@product.Id">
                     <td>@product.Name</td>
                     <td>@product.Quantity</td>
                 </tr>
             }
         </tbody>
     </table>
-} *@
+}
