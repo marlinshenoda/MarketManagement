@@ -10,16 +10,23 @@
         </div>
     </div>
 }
-
+ 
  <div class="form-group">
+    <a asp-action="GetProductsByCategoryIdAjax" asp-route-id="Id"
+    data-ajax="true"
+    data-ajax-method="GET"
+       data-ajax-update="div#productsPartial"
+    data-ajax-mode="replace-with">
     <select class="form-control" asp-for="SelectedCategoryId" asp-items="@await services.GetProductsCategory()">
                     @if (Model is null)
                     {
                         <option selected="selected" value="">Choose a type</option>
                     }
 
-                </select>
+        </select>
+    </a>
             </div>
+          
 <br />
 <div id="productsPartial">
     @* Product List *@

@@ -2,6 +2,7 @@
 using MarketManagement.Core.Interfaces;
 using MarketManagement.Data.Data;
 using MarketManagement.Data.Repositories;
+using MarketManagement.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,10 +28,16 @@ namespace MarketManagement.Web.Controllers
             };
             return View(salesViewModel);
         }
-        public async Task<IActionResult> GetProductsByCategoryId(int categoryId)
+        public async Task<IActionResult> GetProductsByCategoryIdAjax(int categoryId)
         {
-            var products = _context.Product.Where(x => x.CategoryId == categoryId).ToList();
-            return PartialView("_Products", products);
+            if (categoryId == null) return BadRequest();
+
+            if (Request.IsAjax())
+            {
+                var products = _context.Product.Where(x => x.CategoryId == categoryId).ToList();
+                 return PartialView("_Products", products);
+            }
+            return BadRequest();
 
         }
     }
