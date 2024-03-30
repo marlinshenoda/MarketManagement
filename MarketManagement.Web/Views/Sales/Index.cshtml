@@ -12,13 +12,66 @@
 }
 
  <div class="form-group">
-                <label asp-for="SelectedCategoryId" class="control-label"></label>
-    <select asp-for="SelectedCategoryId" class="form-control" asp-items="@await services.GetProductsCategory()">
+    <select class="form-control" asp-for="SelectedCategoryId" asp-items="@await services.GetProductsCategory()">
                     @if (Model is null)
                     {
                         <option selected="selected" value="">Choose a type</option>
-
                     }
 
                 </select>
             </div>
+<br />
+<div id="productsPartial">
+    @* Product List *@
+</div>
+
+   @section Scripts{
+    <script>
+        $(function () {
+
+            // Initialize the form
+            $("#formSale").hide();
+            $("#QuantityToSell").val("");
+
+            // Load the products if category is already selected
+            var selectedCategoryId = $("#SelectedCategoryId").val();
+            if (selectedCategoryId > 0) {
+                loadProducts(selectedCategoryId);
+            }
+
+            // Handle category selection
+            $("#SelectedCategoryId").on("change", function () {
+                loadProducts($(this).val())
+            });
+
+            $("#productsPartial").on('click', '.product-row', function () {
+
+                // Highlight the row selected
+                $('.product-row').removeClass('highlight');
+                $(this).addClass('highlight');
+
+                // Get the product ID from the "product-id" attribute of the clicked row
+                var productId = $(this).attr('product-id');
+
+                // Load the details of the product in a partial view                
+                $("#productDetailPartial").load("/sales/SellProductPartial", { productId: productId});
+
+                if (productId > 0) {
+                    $("#SelectedProductId").val(productId);
+                    $("#formSale").show();
+                }
+                else {
+                    $("#SelectedProductId").val("");
+                    $("#formSale").hide();
+                }
+            });
+
+        });
+
+        function loadProducts(categoryId) {
+            $("#productsPartial").load("/sales/ProductsByCategoryPartial", { categoryId: categoryId });
+            $("#productDetailPartial").html("");
+            $("#formSale").hide();
+        }
+    </script>    
+    }
