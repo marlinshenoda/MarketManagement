@@ -24,18 +24,28 @@ namespace MarketManagement.Web.Controllers
         {
             var salesViewModel = new SalesViewModel
             {
-                Categories = await _categoryRepository.GetAllAsync()
+                Categories = await _categoryRepository.GetAllAsync(),
+                Products = await _service.GetAllAsync()
             };
             return View(salesViewModel);
         }
-        public async Task<IActionResult> GetProductsByCategoryIdAjax(int categoryId)
+        public async Task<IActionResult> GetProductsByCategoryIdAjax(int? Id)
         {
-            if (categoryId == null) return BadRequest();
+            if (Id == null) return BadRequest();
 
             if (Request.IsAjax())
             {
-                var products = _context.Product.Where(x => x.CategoryId == categoryId).ToList();
-                 return PartialView("_Products", products);
+                //   var products=_context.Product.AnyAsync
+         //       var module = await db.Modules.FirstOrDefaultAsync(m => m.Id == id);
+
+                var categoryId = await _context.Category.FirstOrDefaultAsync(m => m.Id == Id);
+                var products = await _context.Product
+                   .Where(m => m.Id == Id).Select(a => new SalesViewModel
+                   {
+                       ProductName = a.Name,
+                       ProductQuentity = (int)a.Quantity
+                   }).ToListAsync();
+                 return View(products);
             }
             return BadRequest();
 

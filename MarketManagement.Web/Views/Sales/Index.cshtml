@@ -10,75 +10,37 @@
         </div>
     </div>
 }
- 
- <div class="form-group">
-    <a asp-action="GetProductsByCategoryIdAjax" asp-route-id="Id"
-    data-ajax="true"
-    data-ajax-method="GET"
-       data-ajax-update="div#productsPartial"
-    data-ajax-mode="replace-with">
-    <select class="form-control" asp-for="SelectedCategoryId" asp-items="@await services.GetProductsCategory()">
-                    @if (Model is null)
-                    {
-                        <option selected="selected" value="">Choose a type</option>
-                    }
 
-        </select>
-    </a>
-            </div>
-          
-<br />
-<div id="productsPartial">
-    @* Product List *@
-</div>
+<select asp-for="SelectedCategoryId" class="form-control" asp-items="@await services.GetProductsCategory()">
 
-   @section Scripts{
-    <script>
-        $(function () {
-
-            // Initialize the form
-            $("#formSale").hide();
-            $("#QuantityToSell").val("");
-
-            // Load the products if category is already selected
-            var selectedCategoryId = $("#SelectedCategoryId").val();
-            if (selectedCategoryId > 0) {
-                loadProducts(selectedCategoryId);
-            }
-
-            // Handle category selection
-            $("#SelectedCategoryId").on("change", function () {
-                loadProducts($(this).val())
-            });
-
-            $("#productsPartial").on('click', '.product-row', function () {
-
-                // Highlight the row selected
-                $('.product-row').removeClass('highlight');
-                $(this).addClass('highlight');
-
-                // Get the product ID from the "product-id" attribute of the clicked row
-                var productId = $(this).attr('product-id');
-
-                // Load the details of the product in a partial view                
-                $("#productDetailPartial").load("/sales/SellProductPartial", { productId: productId});
-
-                if (productId > 0) {
-                    $("#SelectedProductId").val(productId);
-                    $("#formSale").show();
-                }
-                else {
-                    $("#SelectedProductId").val("");
-                    $("#formSale").hide();
-                }
-            });
-
-        });
-
-        function loadProducts(categoryId) {
-            $("#productsPartial").load("/sales/ProductsByCategoryPartial", { categoryId: categoryId });
-            $("#productDetailPartial").html("");
-            $("#formSale").hide();
-        }
-    </script>    
+    @if (Model is null)
+    {
+        <option selected="selected" value="">Choose a type</option>
     }
+
+
+@foreach (var item in @Model.Categories)
+{
+        <a asp-action="GetProductsByCategoryIdAjax" asp-controller="Sales" asp-route-id="@item.Id"
+       data-ajax="true"
+       data-ajax-method="GET"
+       data-ajax-update="#productsPartial"
+       data-ajax-mode="replace-with">  </a>
+        }
+    
+ 
+
+
+
+      
+        </select>
+  
+  
+   
+  
+    
+    <br />
+<tbody id="productsPartial">
+    <partial name="_Products" model="@Model.Products" />
+</tbody>
+        
