@@ -12,8 +12,8 @@ namespace MarketManagement.AutoMapper
         {
             CreateMap<Product, ProductViewModel>().ReverseMap(); ;
             CreateMap<Product, CreateProductViewModel>().ReverseMap();
-            CreateMap<Category, CategotyPartialViewModel>();
-            CreateMap<Product, ProductPartialViewModel>();
+            CreateMap<Category, CategoryPartialViewModel>().ReverseMap(); ;
+            CreateMap<Product, ProductPartialViewModel>().ReverseMap(); ;
 
         }
     }

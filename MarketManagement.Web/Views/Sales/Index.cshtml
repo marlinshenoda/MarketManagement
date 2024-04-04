@@ -1,5 +1,11 @@
 ﻿@model SalesViewModel
 @inject ISelectProductType services
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
 @section title {
     <div class="row">
         <div class="col-7"><h3>Cashier's Console</h3></div>
@@ -11,36 +17,51 @@
     </div>
 }
 
-<select asp-for="SelectedCategoryId" class="form-control" asp-items="@await services.GetProductsCategory()">
 
-    @if (Model is null)
-    {
-        <option selected="selected" value="">Choose a type</option>
-    }
-
-
-@foreach (var item in @Model.Categories)
-{
-        <a asp-action="GetProductsByCategoryIdAjax" asp-controller="Sales" asp-route-id="@item.Id"
-       data-ajax="true"
-       data-ajax-method="GET"
-       data-ajax-update="#productsPartial"
-       data-ajax-mode="replace-with">  </a>
-        }
-    
- 
-
-
-
-      
-        </select>
-  
-  
-   
   
     
     <br />
-<tbody id="productsPartial">
-    <partial name="_Products" model="@Model.Products" />
-</tbody>
-        
+<div class="row">
+    <div class="col-4">
+        <div class="text-danger" asp-validation-summary="All"></div>
+        @* Category selection *@
+        <label asp-for="SelectedCategoryId" class="control-label"></label>
+
+        <select id="categoryDropdown" asp-for="SelectedCategoryId" class="form-control" asp-items="@await services.GetProductsCategory()">
+            <option>- Please Select -</option>
+    
+        </select>
+        <br />
+        <div id="cont-category-product">
+            @* Product List *@
+        </div>
+        <br />
+        <div id="productDetailPartial">
+            @* Product Details *@
+        </div>
+        </<div>
+</div>
+        </div>
+        </div>
+        @section Scripts {
+  
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#categoryDropdown").change(function () {
+                var SelectedCategoryId = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("GetProductsByCategoryIdAjax", "Sales")', // Update the controller and action names accordingly
+                    type: 'GET',
+                    data: { SelectedCategoryId: SelectedCategoryId },
+                    success: function (response) {
+                        $("#cont-category-product").html(response);
+                    },
+                    error: function () {
+                        alert('Error occurred while fetching products.');
+                    }
+                });
+            });
+        });
+    </script>
+    }

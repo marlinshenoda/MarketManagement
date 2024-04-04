@@ -1,10 +1,12 @@
-﻿using MarketManagement.Core.Entities.ViewModels;
+﻿using MarketManagement.Core.Entities;
+using MarketManagement.Core.Entities.ViewModels;
 using MarketManagement.Core.Interfaces;
 using MarketManagement.Data.Data;
 using MarketManagement.Data.Repositories;
 using MarketManagement.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace MarketManagement.Web.Controllers
 {
@@ -22,32 +24,20 @@ namespace MarketManagement.Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var salesViewModel = new SalesViewModel
-            {
-                Categories = await _categoryRepository.GetAllAsync(),
-                Products = await _service.GetAllAsync()
-            };
-            return View(salesViewModel);
+         
+            return View();
         }
-        public async Task<IActionResult> GetProductsByCategoryIdAjax(int? Id)
+
+    
+
+        public async Task<IActionResult> GetProductsByCategoryIdAjax(int SelectedCategoryId)
         {
-            if (Id == null) return BadRequest();
+          
+            var products = await _context.Product
+               .Where(a => a.CategoryId == SelectedCategoryId).ToListAsync();
 
-            if (Request.IsAjax())
-            {
-                //   var products=_context.Product.AnyAsync
-         //       var module = await db.Modules.FirstOrDefaultAsync(m => m.Id == id);
+            return PartialView("_Products", products);
 
-                var categoryId = await _context.Category.FirstOrDefaultAsync(m => m.Id == Id);
-                var products = await _context.Product
-                   .Where(m => m.Id == Id).Select(a => new SalesViewModel
-                   {
-                       ProductName = a.Name,
-                       ProductQuentity = (int)a.Quantity
-                   }).ToListAsync();
-                 return View(products);
-            }
-            return BadRequest();
 
         }
     }
