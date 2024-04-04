@@ -43,33 +43,4 @@
 </div>
         </div>
         </div>
-        @section Scripts {
-  
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#categoryDropdown").change(function () {
-                var SelectedCategoryId = $(this).val();
-                $.ajax({
-                    url: '@Url.Action("GetProductsByCategoryIdAjax", "Sales")', // Update the controller and action names accordingly
-                    type: 'GET',
-                    data: { SelectedCategoryId: SelectedCategoryId },
-                    success: function (response) {
-                        $("#cont-category-product").html(response);
-                    },
-                    error: function () {
-                        alert('Error occurred while fetching products.');
-                    }
-                });
-          
-            });
-     // $("#cont-category-product").on("click", ".product-row", function () {
-
-     //        // Highlight the row selected
-     //        $(".product-row").removeClass("highlight");
-     //        $(this).addClass("highlight");
-        });
       
-    </script>
-    
-    }
