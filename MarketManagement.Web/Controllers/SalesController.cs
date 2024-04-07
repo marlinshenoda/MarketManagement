@@ -40,5 +40,14 @@ namespace MarketManagement.Web.Controllers
 
 
         }
+        public async Task<IActionResult> GetProductsDetailsAjax(int Id)
+        {
+
+            var Details = await _service.GetByIdAsync(Id);
+
+            return PartialView("_SellProduct", Details);
+
+
+        }
     }
 }
