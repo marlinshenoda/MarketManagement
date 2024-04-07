@@ -1,6 +1,7 @@
 ﻿
 
 $(document).ready(function () {
+    $("#formSale").hide();
     $("#cont-category-product").on("click", ".product-row", function () {
 
         // Highlight the row selected
@@ -21,7 +22,15 @@ $(document).ready(function () {
                 }
             
 
-        });
+            });
+        if (Id > 0) {
+            $("#SelectedProductId").val(Id);
+            $("#formSale").show();
+        }
+        else {
+            $("#SelectedProductId").val("");
+            $("#formSale").hide();
+        }
     });
     $("#categoryDropdown").change(function () {
         var SelectedCategoryId = $(this).val();
