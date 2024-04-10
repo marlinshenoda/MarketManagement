@@ -22,6 +22,12 @@ namespace MarketManagement.Data.Repositories
 
         }
 
+        public Product? GetProductById(int Id)
+        {
+            return _context.Product.FirstOrDefault(n => n.Id == Id);
+        }
+
+
     }
 
 }
