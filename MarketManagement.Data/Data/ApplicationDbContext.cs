@@ -10,8 +10,8 @@ namespace MarketManagement.Data.Data
             : base(options)
         {
         }
-        public DbSet<MarketManagement.Core.Entities.Category> Category { get; set; } = default!;
-        public DbSet<MarketManagement.Core.Entities.Product> Product { get; set; } = default!;
-        public DbSet<MarketManagement.Core.Entities.Transaction> Transaction { get; set; } = default!;
+        public DbSet<Category> Category { get; set; } = default!;
+        public DbSet<Product> Product { get; set; } = default!;
+        public DbSet<Transaction> Transaction { get; set; } = default!;
     }
 }

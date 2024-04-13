@@ -7,7 +7,10 @@ using MarketManagement.Core.Entities;
 
 namespace MarketManagement.Core.Interfaces
 {
-    public interface ITransactionRepository : IEntityBaseRepository<Transaction>
+    public  interface ITransactionRepository 
     {
+        public IEnumerable<Transaction> GetByDayAndCashier(string cashierName, DateTime date);
+        public IEnumerable<Transaction> Search(string cashierName, DateTime startDate, DateTime dateTime);
+        public  void Add(string cashierName, int productId, string productName, double price, int beforeQty, int soldQty);
     }
 }
