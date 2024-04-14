@@ -1,5 +1,4 @@
 ﻿using MarketManagement.Core.Entities;
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace MarketManagement.Web.Validations
@@ -14,8 +13,7 @@ namespace MarketManagement.Web.Validations
 
         [Display(Name = "Quantity")]
         [Range(1, int.MaxValue)]
-       //  [SalesViewModel_EnsureProperQuantity]
-        //[Remote(action: "IsQuantityAvalable", controller: "Sales", ErrorMessage = "THere Isn't Enough Quantity", AdditionalFields = nameof(SelectedProductId))]
+        [SalesViewModel_EnsureProperQuantity]
         public int QuantityToSell { get; set; }
     }
 }
