@@ -52,8 +52,13 @@
                 <input type="submit" class="btn btn-primary" value="Submit" />
             </div>
         </form>
-        </<div>
+        
 </div>
-        </div>
-        </div>
+        
+    <div class="col-7">
+        @* List of transactions *@
+
+        @await Component.InvokeAsync("Transactions", "Cashier1")
+    </div>
+ </div>
       

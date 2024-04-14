@@ -12,6 +12,7 @@ namespace MarketManagement.AutoMapper
         {
             CreateMap<Product, ProductViewModel>().ReverseMap(); ;
             CreateMap<Product, CreateProductViewModel>().ReverseMap();
+            CreateMap<Transaction, SalesViewModel>().ReverseMap();
 
         }
     }

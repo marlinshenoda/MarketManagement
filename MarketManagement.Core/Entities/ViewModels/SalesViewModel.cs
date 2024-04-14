@@ -1,7 +1,7 @@
 ﻿using MarketManagement.Core.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace MarketManagement.Web.Validations
+namespace MarketManagement.Core.Entities.ViewModels
 {
     public class SalesViewModel
     {
@@ -13,7 +13,6 @@ namespace MarketManagement.Web.Validations
 
         [Display(Name = "Quantity")]
         [Range(1, int.MaxValue)]
-        [SalesViewModel_EnsureProperQuantity]
         public int QuantityToSell { get; set; }
     }
 }
