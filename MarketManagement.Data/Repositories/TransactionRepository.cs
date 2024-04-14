@@ -13,8 +13,11 @@ namespace MarketManagement.Data.Repositories
     public class TransactionRepository :  ITransactionRepository
     {
         public TransactionRepository(ApplicationDbContext context)
-        { }
+        {
+            _context=context;
+        }
               private List<Transaction> transactions = new List<Transaction>();
+        private readonly ApplicationDbContext _context;
 
         public async Task<IEnumerable<Transaction>> GetByDayAndCashier(string cashierName, DateTime date)
         {

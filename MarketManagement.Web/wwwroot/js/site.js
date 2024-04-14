@@ -32,20 +32,37 @@ $(document).ready(function () {
             $("#formSale").hide();
         }
     });
-    $("#categoryDropdown").change(function () {
-        var SelectedCategoryId = $(this).val();
-        $.ajax({
-            url: "/Sales/GetProductsByCategoryIdAjax", 
-            type: 'GET',
-            data: { SelectedCategoryId: SelectedCategoryId },
-            success: function (response) {
-                $("#cont-category-product").html(response);
-            },
-            error: function () {
-                alert('Error occurred while fetching products.');
-            }
-        });
 
-    });
+    // Load the products if category is already selected
+    var selectedCategoryId = $("#categoryDropdown").val();
+    if (selectedCategoryId > 0) {
+        loadProducts(selectedCategoryId);
+
+    }
+
+        $("#categoryDropdown").change(function () {
+            var SelectedCategoryId = $(this).val();
+            loadProducts(SelectedCategoryId);
+
+
+        });
+    
 });
 
+function loadProducts(SelectedCategoryId) {
+  //  var SelectedCategoryId = $(this).val();
+
+    $.ajax({
+        url: "/Sales/GetProductsByCategoryIdAjax",
+        type: 'GET',
+        data: { SelectedCategoryId: SelectedCategoryId },
+        success: function (response) {
+            $("#cont-category-product").html(response);
+        },
+        error: function () {
+            alert('Error occurred while fetching products.');
+        }
+
+    });
+
+}

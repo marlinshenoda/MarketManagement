@@ -71,12 +71,12 @@ namespace MarketManagement.Web.Controllers
                   await  _service.UpdateAsync(salesViewModel.SelectedProductId, product);
 
                 }
-                var prod = await _service.GetByIdAsync(salesViewModel.SelectedProductId);
+           
+           
+            }
+               var prod = await _service.GetByIdAsync(salesViewModel.SelectedProductId);
                 salesViewModel.SelectedCategoryId = (prod?.CategoryId == null) ? 0 : prod.CategoryId.Value;
                 salesViewModel.Categories = await _categoryRepository.GetAllAsync();
-            }
-
-
             return View("Index", salesViewModel);
 
 

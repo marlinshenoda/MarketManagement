@@ -12,7 +12,7 @@ namespace MarketManagement.Core.Entities.ViewModels
         public int SelectedProductId { get; set; }
 
         [Display(Name = "Quantity")]
-        [Range(1, int.MaxValue)]
+        [Range (1, int.MaxValue)]
         public int QuantityToSell { get; set; }
     }
 }
