@@ -51,7 +51,7 @@
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Submit" />
+                <input type="submit" class="btn btn-primary" id="submit" value="Submit" />
             </div>
         </form>
         
@@ -60,7 +60,8 @@
     <div class="col-7">
         @* List of transactions *@
 
-        @await Component.InvokeAsync("Transactions", "Cashier1")
+        @await Component.InvokeAsync("Transactions",  @User?.Identity?.Name
+                 )
     </div>
  </div>
       

@@ -3,7 +3,7 @@ using MarketManagement.Core.Interfaces;
 
 namespace MarketManagement.Core.Entities
 {
-    public class Transaction : IEntityBase
+    public class Transaction 
     {
         public int Id { get; set; }
         public DateTime TimeStamp { get; set; }

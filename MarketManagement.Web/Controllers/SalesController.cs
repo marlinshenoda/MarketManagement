@@ -27,8 +27,12 @@ namespace MarketManagement.Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-         
-            return View();
+
+            var salesViewModel = new SalesViewModel
+            {
+                Categories = await _categoryRepository.GetAllAsync()
+            };
+            return View(salesViewModel);
         }
 
     
@@ -65,10 +69,12 @@ namespace MarketManagement.Web.Controllers
                         product.Name,
                         product.Price.HasValue ? product.Price.Value : 0,
                         product.Quantity.HasValue ? product.Quantity.Value : 0,
-                        salesViewModel.QuantityToSell
-                );
-                    product.Quantity -= salesViewModel.QuantityToSell;
+                        salesViewModel.QuantityToSell   );
+ product.Quantity -= salesViewModel.QuantityToSell;
                   await  _service.UpdateAsync(salesViewModel.SelectedProductId, product);
+
+             
+                   
 
                 }
            

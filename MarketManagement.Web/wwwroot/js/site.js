@@ -1,7 +1,7 @@
 ﻿
 
 $(document).ready(function () {
-    $("#formSale").hide();
+   $("#formSale").hide();
     $("#cont-category-product").on("click", ".product-row", function () {
 
         // Highlight the row selected
@@ -46,6 +46,21 @@ $(document).ready(function () {
 
 
         });
+    $("#formSale").on("click", "#submit", function () {
+        $.ajax({
+            url: "/Sales/Sell",
+            type: 'Post',
+            data: { Id: Id },
+            success: function (response) {
+                $("#transactions").html(response);
+            },
+            error: function () {
+                alert('Error occurred while fetching products.');
+            }
+
+
+        });
+        });
     
 });
 
@@ -65,4 +80,6 @@ function loadProducts(SelectedCategoryId) {
 
     });
 
-}
+
+
+    }
