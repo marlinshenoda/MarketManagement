@@ -1,4 +1,5 @@
-﻿using MarketManagement.Core.Entities;
+﻿using AutoMapper.Configuration;
+using MarketManagement.Core.Entities;
 using MarketManagement.Core.Entities.ViewModels;
 using MarketManagement.Core.Interfaces;
 using MarketManagement.Data.Data;
@@ -6,6 +7,7 @@ using MarketManagement.Data.Repositories;
 using MarketManagement.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -18,12 +20,12 @@ namespace MarketManagement.Web.Controllers
         private readonly ICategoryRepository _categoryRepository;
         private readonly ITransactionRepository _transactionRepository;
 
-        public SalesController(ApplicationDbContext context, IProductRepository service, ICategoryRepository categoryRepository,ITransactionRepository transactionRepository) 
+        public SalesController(ApplicationDbContext context, IProductRepository service, ICategoryRepository categoryRepository, ITransactionRepository transactionRepository)
         {
             _context = context;
             _service = service;
             _categoryRepository = categoryRepository;
-            _transactionRepository= transactionRepository;
+            _transactionRepository = transactionRepository;
         }
         public async Task<IActionResult> Index()
         {
@@ -35,11 +37,11 @@ namespace MarketManagement.Web.Controllers
             return View(salesViewModel);
         }
 
-    
+
 
         public async Task<IActionResult> GetProductsByCategoryIdAjax(int SelectedCategoryId)
         {
-          
+
             var products = await _context.Product
                .Where(a => a.CategoryId == SelectedCategoryId).ToListAsync();
 
@@ -55,8 +57,8 @@ namespace MarketManagement.Web.Controllers
             return PartialView("_SellProduct", Details);
 
         }
-        
-        public async Task<IActionResult> Sell( SalesViewModel salesViewModel)
+
+        public async Task<IActionResult> Sell(SalesViewModel salesViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -64,28 +66,42 @@ namespace MarketManagement.Web.Controllers
                 var product = await _service.GetByIdAsync(salesViewModel.SelectedProductId);
                 if (product != null)
                 {
-                  await  _transactionRepository.Add("Cashier 1",
-                        salesViewModel.SelectedProductId,
-                        product.Name,
-                        product.Price.HasValue ? product.Price.Value : 0,
-                        product.Quantity.HasValue ? product.Quantity.Value : 0,
-                        salesViewModel.QuantityToSell   );
- product.Quantity -= salesViewModel.QuantityToSell;
-                  await  _service.UpdateAsync(salesViewModel.SelectedProductId, product);
+                    if (product.Quantity < salesViewModel.QuantityToSell)
+                        ModelState.AddModelError("", $"{product.Name} only has {product.Quantity} left. It is not enough.");
+                    else
+                    {
+                        await _transactionRepository.Add("Cashier 1",
+                              salesViewModel.SelectedProductId,
+                              product.Name,
+                              product.Price.HasValue ? product.Price.Value : 0,
+                              product.Quantity.HasValue ? product.Quantity.Value : 0,
+                              salesViewModel.QuantityToSell);
 
-             
-                   
+
+
+                        product.Quantity -= salesViewModel.QuantityToSell;
+                        await _service.UpdateAsync(salesViewModel.SelectedProductId, product);
+                    }
+
+
+
 
                 }
-           
-           
+                else
+                {
+                    ModelState.AddModelError("", "Product not found.");
+                }
+
             }
-               var prod = await _service.GetByIdAsync(salesViewModel.SelectedProductId);
-                salesViewModel.SelectedCategoryId = (prod?.CategoryId == null) ? 0 : prod.CategoryId.Value;
-                salesViewModel.Categories = await _categoryRepository.GetAllAsync();
+            var prod = await _service.GetByIdAsync(salesViewModel.SelectedProductId);
+            salesViewModel.SelectedCategoryId = (prod?.CategoryId == null) ? 0 : prod.CategoryId.Value;
+            salesViewModel.Categories = await _categoryRepository.GetAllAsync();
             return View("Index", salesViewModel);
 
 
         }
+
+
+
     }
 }

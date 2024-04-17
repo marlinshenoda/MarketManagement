@@ -18,9 +18,9 @@
 }
 
 
-  
-    
-    <br />
+
+
+<br />
 <div class="row">
     <div class="col-4">
         <div class="text-danger" asp-validation-summary="All"></div>
@@ -29,7 +29,7 @@
 
         <select id="categoryDropdown" asp-for="SelectedCategoryId" class="form-control" asp-items="@await services.GetProductsCategory()">
             <option>- Please Select -</option>
-    
+
         </select>
         <br />
         <div id="cont-category-product">
@@ -45,23 +45,25 @@
             <input asp-for="SelectedProductId" type="hidden" />
             <div class="form-group">
                 <label asp-for="QuantityToSell"></label>
-                <input asp-for="QuantityToSell" class="form-control" type="number" min="1"    />      
+                <input asp-for="QuantityToSell" class="form-control" type="number" min="1" />
 
 
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" id="submit" value="Submit" />
+                <input type="submit" class="btn btn-primary" value="Submit" />
             </div>
         </form>
-        
-</div>
-        
+
+    </div>
+
     <div class="col-7">
         @* List of transactions *@
 
-        @await Component.InvokeAsync("Transactions",  @User?.Identity?.Name
+        @await Component.InvokeAsync("Transactions", @User?.Identity?.Name
                  )
     </div>
- </div>
-      
+</div>
+
+
+
