@@ -7,24 +7,40 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MarketManagement.Core.Entities;
 using MarketManagement.Data.Data;
+using MarketManagement.Core.Entities.ViewModels;
+using MarketManagement.Core.Interfaces;
 
 namespace MarketManagement.Web.Controllers
 {
     public class TransactionsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ITransactionRepository _transactionRepository;
 
-        public TransactionsController(ApplicationDbContext context)
+        public TransactionsController(ApplicationDbContext context,ITransactionRepository transactionRepository)
         {
             _context = context;
+            _transactionRepository=transactionRepository;
         }
 
         // GET: Transactions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Transaction.ToListAsync());
+            TransactionsViewModel transactionsViewModel = new TransactionsViewModel();
+            return View(transactionsViewModel);
         }
 
+        public async Task<IActionResult> Search(TransactionsViewModel transactionsViewModel)
+        {
+            var transactions =await  _transactionRepository.Search(
+                transactionsViewModel.CashierName ?? string.Empty,
+                transactionsViewModel.StartDate,
+                transactionsViewModel.EndDate);
+
+            transactionsViewModel.Transactions = transactions;
+
+            return View("Index", transactionsViewModel);
+        }
         // GET: Transactions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
