@@ -24,7 +24,6 @@ builder.Services.AddScoped<ISelectProductType, SelectProductType>();
 builder.Services.AddScoped<ICategoryRepository, _categoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-//builder.Services.AddScoped<IViewSelectedProductUseCase, ViewSelectedProductUseCase>();
 
 var app = builder.Build();
 
