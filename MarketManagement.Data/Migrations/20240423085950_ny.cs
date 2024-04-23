@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace MarketManagement.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class start : Migration
+    public partial class ny : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -209,6 +211,27 @@ namespace MarketManagement.Data.Migrations
                         principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Category",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Beverage", "Beverage" },
+                    { 2, "Bakery", "Bakery" },
+                    { 3, "Meat", "Meat" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Product",
+                columns: new[] { "Id", "CategoryId", "Name", "Price", "Quantity" },
+                values: new object[,]
+                {
+                    { 1, 1, "Iced Tea", 1.99, 100 },
+                    { 2, 1, "Canada Dry", 1.99, 200 },
+                    { 3, 2, "Whole Wheat Bread", 1.5, 300 },
+                    { 4, 2, "White Bread", 1.5, 300 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -5,7 +5,7 @@
 namespace MarketManagement.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ny : Migration
+    public partial class @uint : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

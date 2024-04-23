@@ -60,7 +60,7 @@
     <div class="col-7">
         @* List of transactions *@
 
-        @await Component.InvokeAsync("Transactions", "Cashier 1"
+        @await Component.InvokeAsync("Transactions", @User?.Identity?.Name
                  )
     </div>
 </div>

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarketManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240414104727_ny")]
+    [Migration("20240423085950_ny")]
     partial class ny
     {
         /// <inheritdoc />
@@ -43,6 +43,26 @@ namespace MarketManagement.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Beverage",
+                            Name = "Beverage"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Bakery",
+                            Name = "Bakery"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Meat",
+                            Name = "Meat"
+                        });
                 });
 
             modelBuilder.Entity("MarketManagement.Core.Entities.Product", b =>
@@ -74,6 +94,40 @@ namespace MarketManagement.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Product");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Name = "Iced Tea",
+                            Price = 1.99,
+                            Quantity = 100
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            Name = "Canada Dry",
+                            Price = 1.99,
+                            Quantity = 200
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 2,
+                            Name = "Whole Wheat Bread",
+                            Price = 1.5,
+                            Quantity = 300
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            Name = "White Bread",
+                            Price = 1.5,
+                            Quantity = 300
+                        });
                 });
 
             modelBuilder.Entity("MarketManagement.Core.Entities.Transaction", b =>

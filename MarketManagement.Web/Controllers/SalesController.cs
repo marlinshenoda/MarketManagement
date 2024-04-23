@@ -5,6 +5,7 @@ using MarketManagement.Core.Interfaces;
 using MarketManagement.Data.Data;
 using MarketManagement.Data.Repositories;
 using MarketManagement.Web.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -19,13 +20,15 @@ namespace MarketManagement.Web.Controllers
         private readonly IProductRepository _service;
         private readonly ICategoryRepository _categoryRepository;
         private readonly ITransactionRepository _transactionRepository;
+        private UserManager<IdentityUser> _userManager;
 
-        public SalesController(ApplicationDbContext context, IProductRepository service, ICategoryRepository categoryRepository, ITransactionRepository transactionRepository)
+        public SalesController(ApplicationDbContext context, IProductRepository service, UserManager<IdentityUser> userManager, ICategoryRepository categoryRepository, ITransactionRepository transactionRepository)
         {
             _context = context;
             _service = service;
             _categoryRepository = categoryRepository;
             _transactionRepository = transactionRepository;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
@@ -62,6 +65,8 @@ namespace MarketManagement.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+
                 // Sell the product
                 var product = await _service.GetByIdAsync(salesViewModel.SelectedProductId);
                 if (product != null)
@@ -70,7 +75,7 @@ namespace MarketManagement.Web.Controllers
                         ModelState.AddModelError("", $"{product.Name} only has {product.Quantity} left. It is not enough.");
                     else
                     {
-                        await _transactionRepository.Add("Cashier 1",
+                        await _transactionRepository.Add(user.UserName,
                               salesViewModel.SelectedProductId,
                               product.Name,
                               product.Price.HasValue ? product.Price.Value : 0,

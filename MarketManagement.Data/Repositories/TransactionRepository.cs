@@ -2,6 +2,7 @@
 using MarketManagement.Core.Entities;
 using MarketManagement.Core.Interfaces;
 using MarketManagement.Data.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,27 +17,38 @@ namespace MarketManagement.Data.Repositories
         {
             _context=context;
         }
-              private List<Transaction> transactions = new List<Transaction>();
         private readonly ApplicationDbContext _context;
 
         public async Task<IEnumerable<Transaction>> GetByDayAndCashier(string cashierName, DateTime date)
         {
+           
             if (string.IsNullOrWhiteSpace(cashierName))
-                return transactions.Where(x => x.TimeStamp.Date == date.Date);
+            {
+                return _context.Transaction.Where(x => x.TimeStamp.Date == date.Date);
+            }
             else
-                return transactions.Where(x =>
-                    x.CashierName.ToLower().Contains(cashierName.ToLower()) &&
+            {
+                return _context.Transaction.Where(x =>
+                    EF.Functions.Like(x.CashierName, $"%{cashierName}%") &&
                     x.TimeStamp.Date == date.Date);
+            }
         }
 
         public async Task<IEnumerable<Transaction>> Search(string cashierName, DateTime startDate, DateTime endDate)
         {
             if (string.IsNullOrWhiteSpace(cashierName))
-                return transactions.Where(x => x.TimeStamp >= startDate.Date && x.TimeStamp <= endDate.Date.AddDays(1).Date);
+            {
+                return _context.Transaction.Where(x =>
+                    x.TimeStamp.Date >= startDate.Date &&
+                    x.TimeStamp.Date <= endDate.Date);
+            }
             else
-                return transactions.Where(x =>
-                    x.CashierName.ToLower().Contains(cashierName.ToLower()) &&
-                    x.TimeStamp >= startDate.Date && x.TimeStamp <= endDate.Date.AddDays(1).Date);
+            {
+                return _context.Transaction.Where(x =>
+                    EF.Functions.Like(x.CashierName, $"%{cashierName}%") &&
+                    x.TimeStamp.Date >= startDate.Date &&
+                    x.TimeStamp.Date <= endDate.Date);
+            }
         }
 
         public async Task Add(string cashierName, int productId, string productName, double price, int beforeQty, int soldQty)
@@ -52,17 +64,10 @@ namespace MarketManagement.Data.Repositories
                 CashierName = cashierName
             };
 
-            if (transactions != null && transactions.Count > 0)
-            {
-                var maxId = transactions.Max(x => x.Id);
-                transaction.Id = maxId + 1;
-            }
-            else
-            {
-                transaction.Id = 1;
-            }
+          
 
-            transactions?.Add(transaction);
+         await   _context.Transaction.AddAsync(transaction);
+         await   _context.SaveChangesAsync();
         }
     }
    }
